@@ -1,0 +1,38 @@
+﻿@page "/midfielders"
+@inject ILogger<Midfielders> Logger 
+@inject GetFplDataService fplService 
+@using FplStatsWasm.Pages.Components
+
+<PageTitle>Midfielders</PageTitle>
+
+<h1>Midfielders</h1>
+
+<PlayerTable @ref="child" players="typedPlayers"></PlayerTable>
+
+@code {
+    public IEnumerable<Player>? typedPlayers { get; set; }
+
+    PlayerTable? child; 
+
+    protected override async Task OnInitializedAsync(){
+
+        await fplService.taskCompletionSource.Task;
+
+        typedPlayers = fplService.PlayerList.Where(p => p.Position == 3);
+        
+        await base.OnInitializedAsync();
+    } 
+    
+    protected override async Task OnAfterRenderAsync(bool firstRender){
+        
+        if (firstRender && child!=null)
+        {
+            //await JS.InvokeVoidAsync("sorttable.makeSortable", allTableRef);
+            await child.SortTableInvokeJSAsync();
+        }
+        
+        await base.OnAfterRenderAsync(firstRender);
+    } 
+}
+
+

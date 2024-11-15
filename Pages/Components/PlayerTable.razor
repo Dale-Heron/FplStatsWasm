@@ -1,0 +1,87 @@
+@inject IJSRuntime JS
+
+<p>Showing players data</p>
+
+<div class="form-group">
+    <input class="form-control" type="text" placeholder="search..."
+           @bind=filter
+           @bind:event="oninput">
+</div>
+
+@if (players == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table @ref="tableRef" class="table table-striped sortable">
+        <thead>
+            <tr>
+                <th>First name</th>
+                <th>Second name</th>
+                @if (ShowPlayerPosition)
+                {
+                    <th>Position</th>
+                }
+                <th>Team</th>
+                <th>Total points</th>
+                <th>Price</th>
+                <th>Minutes</th>
+                <th>SelectedByPercent</th>
+                <th>PointsOverPrice</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var player in players)
+            {
+                @if (!IsVisible(player))
+                    continue;
+
+                <tr>
+                    <td>@player.FirstName</td>
+                    <td>@player.SecondName</td>
+                    @if (ShowPlayerPosition)
+                    {
+                        <th>@player.Position</th>
+                    }
+                    <td>@player.Team</td>
+                    <td>@player.TotalPoints</td>
+                    <td>@player.PriceF</td>
+                    <td>@player.Minutes</td>
+                    <td>@player.SelectedByPercent</td>
+                    <td>@player.PointsOverPrice</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    [Parameter]
+    public IEnumerable<Player>? players { get; set; }
+
+    [Parameter]
+    public ElementReference tableRef { get; set; }
+
+    [Parameter]
+    public bool ShowPlayerPosition { get; set; } = false;
+
+    public string? filter { get; set; }
+
+    public bool IsVisible(Player player)
+    {
+        if (string.IsNullOrEmpty(filter))
+            return true;
+    
+        if (player.FirstName.StartsWith(filter, StringComparison.InvariantCultureIgnoreCase) ||
+            player.SecondName.StartsWith(filter, StringComparison.InvariantCultureIgnoreCase))
+            return true;
+    
+        return false;
+    }
+
+    public async Task SortTableInvokeJSAsync(){
+        
+        //await JS.InvokeVoidAsync("sorttable.makeSortable", tableRef);
+    } 
+}

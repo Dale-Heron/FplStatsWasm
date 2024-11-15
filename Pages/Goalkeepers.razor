@@ -1,0 +1,37 @@
+﻿@page "/goalkeepers"
+@inject ILogger<Goalkeepers> Logger 
+@inject GetFplDataService fplService 
+@using FplStatsWasm.Pages.Components
+
+<PageTitle>Goalkeepers</PageTitle>
+
+<h1>Goalkeepers</h1>
+
+<PlayerTable @ref="child" players="typedPlayers"></PlayerTable>
+
+@code {
+    public IEnumerable<Player>? typedPlayers { get; set; }
+    PlayerTable? child; 
+
+    protected override async Task OnInitializedAsync(){
+
+        await fplService.taskCompletionSource.Task;
+
+        typedPlayers = fplService.PlayerList.Where(p => p.Position == 1);
+        
+        await base.OnInitializedAsync();
+    } 
+    
+    protected override async Task OnAfterRenderAsync(bool firstRender){
+        
+        if (firstRender && child!=null)
+        {
+            //await JS.InvokeVoidAsync("sorttable.makeSortable", allTableRef);
+            await child.SortTableInvokeJSAsync();
+        }
+        
+        await base.OnAfterRenderAsync(firstRender);
+    } 
+}
+
+

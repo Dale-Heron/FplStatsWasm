@@ -1,7 +1,25 @@
 ﻿@page "/"
+@inject ILogger<Home> Logger 
 
 <PageTitle>Home</PageTitle>
 
-<h1>Hello, world!</h1>
+<h1>Fantasy Premier League Data</h1>
 
-Welcome to your new app.
+This webapp grabs the latest player Data from <a href="https://fantasy.premierleague.com/api/bootstrap-static/">here</a>
+and makes it easy to search and filter.
+
+@code {
+    
+    protected override async Task OnInitializedAsync(){
+
+        Logger.LogInformation("OnInitializedAsync");
+        
+        await base.OnInitializedAsync();
+    } 
+
+    protected override async Task OnAfterRenderAsync(bool firstRender){
+        Logger.LogInformation("OnAfterRenderAsync {FirstRender}", firstRender);
+        
+        await base.OnAfterRenderAsync(firstRender);
+    } 
+}
