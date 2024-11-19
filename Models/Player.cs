@@ -1,6 +1,8 @@
 using System.Text.Json.Serialization;
 using Microsoft.VisualBasic;
 
+namespace FplStatsWasm.Models;
+
 public class Player
 {
     [JsonPropertyName("first_name")]
