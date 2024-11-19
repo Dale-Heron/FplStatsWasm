@@ -1,0 +1,6 @@
+@FplStatsWasm.Server_HostAddress = http://localhost:5066
+
+GET {{FplStatsWasm.Server_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
