@@ -1,6 +1,6 @@
 {
-  "name": "FplStatsWasm",
-  "short_name": "FplStatsWasm",
+  "name": "FplStatsWasm.Client",
+  "short_name": "FplStatsWasm.Client",
   "id": "./",
   "start_url": "./",
   "display": "standalone",

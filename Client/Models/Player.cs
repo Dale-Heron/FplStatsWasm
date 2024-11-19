@@ -1,7 +1,7 @@
 using System.Text.Json.Serialization;
 using Microsoft.VisualBasic;
 
-namespace FplStatsWasm.Models;
+namespace FplStatsWasm.Client.Models;
 
 public class Player
 {
