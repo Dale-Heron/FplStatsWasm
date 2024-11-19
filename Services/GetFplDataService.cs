@@ -14,9 +14,9 @@ namespace FplStatsWasm
     
         private HttpClient httpClient;
         
-        public GetFplDataService(HttpClient httpClientTemp/*IHttpClientFactory httpClientFactory*/)
+        public GetFplDataService(IHttpClientFactory httpClientFactory)
         {
-            httpClient = httpClientTemp;//httpClientFactory.CreateClient();
+            httpClient = httpClientFactory.CreateClient();
             GetData();
         }
 
