@@ -6,7 +6,7 @@ using System.Text.Json;
 using FplStatsWasm.Client.Models;
 
 
-namespace FplStatsWasm;
+namespace FplStatsWasm.Client.Services;
 
 public class GetFplDataService
 {
