@@ -32,10 +32,9 @@ public class GetLocalDataService
         
         List<Player>? players = await httpClient.GetFromJsonAsync<List<Player>>(url);
 
-        if(players!=null){
+        if(players!=null && players.Count>0){
             PlayerList = players;
+            taskCompletionSource.SetResult(1);
         }
-
-        taskCompletionSource.SetResult(1);
     }
 }
