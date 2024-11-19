@@ -1,9 +1,14 @@
+using FplStatsWasm.Server.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllers();
 builder.Services.AddRazorPages();
+
+builder.Services.AddHttpClient();
+builder.Services.AddSingleton<GetFplDataService>();
 
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

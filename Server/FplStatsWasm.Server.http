@@ -1,6 +1,6 @@
-@FplStatsWasm.Server_HostAddress = http://localhost:5066
+@FplStatsWasm.Server_HostAddress = https://localhost:7119
 
-GET {{FplStatsWasm.Server_HostAddress}}/weatherforecast/
+GET {{FplStatsWasm.Server_HostAddress}}/Players/
 Accept: application/json
 
 ###

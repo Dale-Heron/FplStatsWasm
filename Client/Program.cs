@@ -17,8 +17,8 @@ builder.Services.AddHttpClient("backend", client => client.BaseAddress = new Uri
     .AddHttpMessageHandler<AntiforgeryHandler>();
 builder.Services.AddTransient(sp => sp.GetRequiredService<IHttpClientFactory>().CreateClient("backend"));
 */
-builder.Services.AddHttpClient();
+builder.Services.AddHttpClient("backend", client => client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress));
 
-builder.Services.AddSingleton<GetFplDataService>();
+builder.Services.AddSingleton<GetLocalDataService>();
 
 await builder.Build().RunAsync();

@@ -3,12 +3,12 @@ using System.Net.Http;
 using System.Net.Http.Json;
 using System.Text.Json.Serialization;
 using System.Text.Json;
-using FplStatsWasm.Client.Models;
+using FplStatsWasm.Shared.Models;
 
 
 namespace FplStatsWasm.Client.Services;
 
-public class GetFplDataService
+public class GetLocalDataService
 {
     public List<Player> PlayerList { get; private set; } = new List<Player>();
 
@@ -16,29 +16,25 @@ public class GetFplDataService
 
     private HttpClient httpClient;
     
-    public GetFplDataService(IHttpClientFactory httpClientFactory)
+    public GetLocalDataService(IHttpClientFactory httpClientFactory)
     {
-        httpClient = httpClientFactory.CreateClient();
+        httpClient = httpClientFactory.CreateClient("backend");
         GetData();
     }
 
     private async void GetData()
     {
-        PlayerList.Add(new Player(){
+        /*PlayerList.Add(new Player(){
             FirstName="Gabriel", Minutes=112, Position=4, Price=68, SecondName="Fernando de Jesus", SelectedByPercent="0.9", TeamCode=3, TotalPoints=5
-        });
-        /*
-        string url = "https://fantasy.premierleague.com/api/bootstrap-static/";
+        });*/
         
-        var topLevel = await httpClient.GetFromJsonAsync<Dictionary<string, JsonElement>>(url);
+        string url = "/Players";
+        
+        List<Player>? players = await httpClient.GetFromJsonAsync<List<Player>>(url);
 
-        if( topLevel != null){
-            List<Player>? players = JsonSerializer.Deserialize<List<Player>>(topLevel["elements"]);
-
-            if(players != null){
-                PlayerList = players;
-            }
-        }*/
+        if(players!=null){
+            PlayerList = players;
+        }
 
         taskCompletionSource.SetResult(1);
     }
