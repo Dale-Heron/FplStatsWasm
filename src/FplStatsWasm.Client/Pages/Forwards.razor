@@ -1,31 +1,32 @@
 ﻿@page "/forwards"
 @inject ILogger<Forwards> Logger 
-@inject GetLocalDataService fplService 
+@inject GetLocalDataService FplService 
 
 <PageTitle>Forwards</PageTitle>
 
 <h1>Forwards</h1>
 
-<PlayerTable @ref="child" players="typedPlayers"></PlayerTable>
+<PlayerTable @ref="_child" Players="TypedPlayers"></PlayerTable>
 
 @code {
-    public IEnumerable<Player>? typedPlayers { get; set; }
-    PlayerTable? child; 
+    public IEnumerable<Player>? TypedPlayers { get; set; }
+    private PlayerTable? _child; 
 
     protected override async Task OnInitializedAsync(){
 
-        var players = await fplService.GetPlayers();
+        var players = await FplService.GetPlayers();
 
-        typedPlayers = players.Where(p => p.Position == 4);
-        
+        TypedPlayers = players.Where(p => p.Position == 4);
+        Logger.LogInformation("Player count={Count}", TypedPlayers.Count());
+
         await base.OnInitializedAsync();
     } 
     
     protected override async Task OnAfterRenderAsync(bool firstRender){
         
-        if (firstRender && child!=null)
+        if (firstRender && _child!=null)
         {
-            await child.SortTableInvokeJSAsync();
+            await _child.SortTableInvokeJsAsync();
         }
         
         await base.OnAfterRenderAsync(firstRender);

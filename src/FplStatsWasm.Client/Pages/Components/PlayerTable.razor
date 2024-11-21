@@ -1,20 +1,20 @@
-@inject IJSRuntime JS
+@inject IJSRuntime Js
 
 <p>Showing players data</p>
 
 <div class="form-group">
     <input class="form-control" type="text" placeholder="search..."
-           @bind=filter
+           @bind=Filter
            @bind:event="oninput">
 </div>
 
-@if (players == null)
+@if (Players == null)
 {
     <p><em>Loading...</em></p>
 }
 else
 {
-    <table @ref="tableRef" class="table table-striped sortable">
+    <table @ref="TableRef" class="table table-striped sortable">
         <thead>
             <tr>
                 <th>First name</th>
@@ -32,7 +32,7 @@ else
             </tr>
         </thead>
         <tbody>
-            @foreach (var player in players)
+            @foreach (var player in Players)
             {
                 @if (!IsVisible(player))
                     continue;
@@ -58,30 +58,30 @@ else
 
 @code {
     [Parameter]
-    public IEnumerable<Player>? players { get; set; }
+    public IEnumerable<Player>? Players { get; set; }
 
     [Parameter]
-    public ElementReference tableRef { get; set; }
+    public ElementReference TableRef { get; set; }
 
     [Parameter]
     public bool ShowPlayerPosition { get; set; } = false;
 
-    public string? filter { get; set; }
+    private string? Filter { get; set; }
 
-    public bool IsVisible(Player player)
+    private bool IsVisible(Player player)
     {
-        if (string.IsNullOrEmpty(filter))
+        if (string.IsNullOrEmpty(Filter))
             return true;
     
-        if (player.FirstName.StartsWith(filter, StringComparison.InvariantCultureIgnoreCase) ||
-            player.SecondName.StartsWith(filter, StringComparison.InvariantCultureIgnoreCase))
+        if (player.FirstName.StartsWith(Filter, StringComparison.InvariantCultureIgnoreCase) ||
+            player.SecondName.StartsWith(Filter, StringComparison.InvariantCultureIgnoreCase))
             return true;
     
         return false;
     }
 
-    public async Task SortTableInvokeJSAsync(){
+    public async Task SortTableInvokeJsAsync(){
         
-        await JS.InvokeVoidAsync("sorttable.makeSortable", tableRef);
+        await Js.InvokeVoidAsync("sorttable.makeSortable", TableRef);
     } 
 }
