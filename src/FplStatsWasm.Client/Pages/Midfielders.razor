@@ -15,9 +15,9 @@
 
     protected override async Task OnInitializedAsync(){
 
-        await fplService.taskCompletionSource.Task;
+        var players = await fplService.GetPlayers();
 
-        typedPlayers = fplService.PlayerList.Where(p => p.Position == 3);
+        typedPlayers = players.Where(p => p.Position == 3);
         
         await base.OnInitializedAsync();
     } 
@@ -26,7 +26,6 @@
         
         if (firstRender && child!=null)
         {
-            //await JS.InvokeVoidAsync("sorttable.makeSortable", allTableRef);
             await child.SortTableInvokeJSAsync();
         }
         

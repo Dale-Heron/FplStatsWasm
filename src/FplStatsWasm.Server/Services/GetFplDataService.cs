@@ -1,10 +1,5 @@
-
-using System.Net.Http;
-using System.Net.Http.Json;
-using System.Text.Json.Serialization;
 using System.Text.Json;
 using FplStatsWasm.Shared.Models;
-using FplStatsWasm.Server.Controllers;
 
 
 namespace FplStatsWasm.Server.Services;
