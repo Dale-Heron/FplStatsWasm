@@ -6,9 +6,11 @@ namespace FplStatsWasm.Client.Services;
 public class GetLocalDataService
 {
     private readonly HttpClient _httpClient;
-    
-    public GetLocalDataService(IHttpClientFactory httpClientFactory)
+    private readonly ILogger<GetLocalDataService> _logger;
+
+    public GetLocalDataService(ILogger<GetLocalDataService> logger, IHttpClientFactory httpClientFactory)
     {
+        _logger = logger;
         _httpClient = httpClientFactory.CreateClient("backend");
     }
 
@@ -19,6 +21,7 @@ public class GetLocalDataService
         List<Player>? players = await _httpClient.GetFromJsonAsync<List<Player>>(url);
 
         if(players!=null && players.Count>0){
+            _logger.LogInformation($"Found {players.Count} players");
             return players;
         }
 

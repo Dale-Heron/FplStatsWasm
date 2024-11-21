@@ -18,8 +18,8 @@
         var players = await FplService.GetPlayers();
 
         TypedPlayers = players;
-        Logger.LogInformation("Player count={Count}", TypedPlayers.Count());
-        
+        Logger.LogInformation($"Found {TypedPlayers.Count()} players");
+
         await base.OnInitializedAsync();
     } 
 
