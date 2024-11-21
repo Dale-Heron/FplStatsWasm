@@ -19,7 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Shared\FplStatsWasm.Shared.csproj" />
+    <ProjectReference Include="..\FplStatsWasm.Shared\FplStatsWasm.Shared.csproj" />
   </ItemGroup>
 
 </Project>
