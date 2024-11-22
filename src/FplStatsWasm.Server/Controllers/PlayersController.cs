@@ -23,7 +23,7 @@ public class PlayersController : ControllerBase
         _logger.LogInformation("Get players");
         var list = await _getFplDataService.GetPlayersData();
 
-        _logger.LogInformation("Count={Count}", list.Count);
+        _logger.LogInformation($"Count={list.Count}");
 
         return list;
     }

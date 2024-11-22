@@ -31,7 +31,7 @@ public class GetFplDataService
         async Task<List<Player>> GetPlayersDataOverWire()
         {
             var players = new List<Player>();
-            string url = "https://fantasy.premierleague.com/api/bootstrap-static/";
+            const string url = "https://fantasy.premierleague.com/api/bootstrap-static/";
         
             var topLevel = await _httpClient.GetFromJsonAsync<Dictionary<string, JsonElement>>(url);
 
