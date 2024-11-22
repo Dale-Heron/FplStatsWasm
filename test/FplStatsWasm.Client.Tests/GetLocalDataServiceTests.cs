@@ -1,4 +1,3 @@
-using System.Net.Http.Json;
 using System.Text.Json;
 using FplStatsWasm.Client.Services;
 using FplStatsWasm.Shared.Models;
@@ -17,54 +16,54 @@ public class GetLocalDataServiceTests
 
     public GetLocalDataServiceTests(ITestOutputHelper output)
     {
-        this._output = output;
+        _output = output;
     }
 
     [Fact]
-    public async void GetPlayersData_happy_path()
+    public async void GetPlayersData_Use_fake_httpclient_and_real_memory_cache_Check_log_message_and_data()
     {
         //arrange
-        var service = GetService(out var logger);
+        var (service, logger) = GetLocalDataService();
     
         //act
         var players = await service.GetPlayers();
 
-
         //assert
         Assert.NotEmpty(players);
-        Assert.NotNull(logger.Collector.LatestRecord);
-        Assert.Equal(1, logger.Collector.Count);
-        Assert.Equal(LogLevel.Information, logger.Collector.GetSnapshot()[0].Level);
-        Assert.StartsWith("Found ", logger.Collector.LatestRecord.Message);
-        
-        _output.WriteLine(logger.Collector.LatestRecord.Message);
+
+        CheckForSingleFoundLogMessage(logger);
     }
     
     [Fact]
-    public async void GetPlayersData_Call_twice_should_cache()
+    public async void GetPlayersData_Use_fake_httpclient_and_real_memory_cache_Call_twice_should_cache()
     {
         //arrange
-        var service = GetService(out var logger);
+        var (service, logger) = GetLocalDataService();
 
         //act
         await service.GetPlayers();
         
         var players = await service.GetPlayers();
 
-
         //assert
         Assert.NotEmpty(players);
+
+        CheckForSingleFoundLogMessage(logger);
+    }
+
+    private void CheckForSingleFoundLogMessage(FakeLogger<GetLocalDataService> logger)
+    {
         Assert.NotNull(logger.Collector.LatestRecord);
         Assert.Equal(1, logger.Collector.Count);
         Assert.Equal(LogLevel.Information, logger.Collector.GetSnapshot()[0].Level);
         Assert.StartsWith("Found ", logger.Collector.LatestRecord.Message);
-        
+
         _output.WriteLine(logger.Collector.LatestRecord.Message);
     }
 
-    private static GetLocalDataService GetService(out FakeLogger<GetLocalDataService> logger)
+    private static (GetLocalDataService, FakeLogger<GetLocalDataService>) GetLocalDataService()
     {
-        logger = new FakeLogger<GetLocalDataService>();
+        var logger = new FakeLogger<GetLocalDataService>();
         
         var mockHttp = new MockHttpMessageHandler();
 
@@ -84,6 +83,6 @@ public class GetLocalDataServiceTests
         var inmemory = new MemoryCache(new MemoryCacheOptions());
 
         var service = new GetLocalDataService(inmemory, logger, hcFactory.Object);
-        return service;
+        return (service, logger);
     }
 }

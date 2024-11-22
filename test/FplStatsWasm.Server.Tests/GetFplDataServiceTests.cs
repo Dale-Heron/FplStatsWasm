@@ -13,7 +13,7 @@ public class GetFplDataServiceTests
 
     public GetFplDataServiceTests(ITestOutputHelper output)
     {
-        this._output = output;
+        _output = output;
     }
 
     [Fact]
@@ -29,8 +29,6 @@ public class GetFplDataServiceTests
         Assert.NotEmpty(players);
 
         CheckForSingleFoundLogMessage(logger);
-        
-        _output.WriteLine(logger.Collector.LatestRecord.Message);
     }
     
     [Fact]
@@ -49,16 +47,16 @@ public class GetFplDataServiceTests
         Assert.NotEmpty(players);
 
         CheckForSingleFoundLogMessage(logger);
-
-        _output.WriteLine(logger.Collector.LatestRecord.Message);
     }
 
-    private static void CheckForSingleFoundLogMessage(FakeLogger<GetFplDataService> logger)
+    private void CheckForSingleFoundLogMessage(FakeLogger<GetFplDataService> logger)
     {
         Assert.NotNull(logger.Collector.LatestRecord);
         Assert.Equal(1, logger.Collector.Count);
         Assert.Equal(LogLevel.Information, logger.Collector.GetSnapshot()[0].Level);
         Assert.StartsWith("Found ", logger.Collector.LatestRecord.Message);
+        
+        _output.WriteLine(logger.Collector.LatestRecord.Message);
     }
 
     private static (GetFplDataService service, FakeLogger<GetFplDataService> logger) GetFplDataService()
