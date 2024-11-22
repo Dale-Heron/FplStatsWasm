@@ -1,39 +1,52 @@
 using System.Text.Json;
 using FplStatsWasm.Shared.Models;
+using Microsoft.Extensions.Caching.Memory;
 
 
 namespace FplStatsWasm.Server.Services;
 
 public class GetFplDataService
 {
-    private HttpClient httpClient;
+    private readonly HttpClient _httpClient;
+    
+    private readonly IMemoryCache _memoryCache;
 
     private readonly ILogger<GetFplDataService> _logger;
     
-    public GetFplDataService(ILogger<GetFplDataService> logger,IHttpClientFactory httpClientFactory)
+    public GetFplDataService(IMemoryCache memoryCache,
+        ILogger<GetFplDataService> logger,
+        IHttpClientFactory httpClientFactory)
     {
+        _memoryCache = memoryCache;
         _logger = logger;
-        httpClient = httpClientFactory.CreateClient();
+        _httpClient = httpClientFactory.CreateClient();
     }
-
+    
     public async Task<List<Player>> GetPlayersData()
     {
-        var players = new List<Player>();
-        string url = "https://fantasy.premierleague.com/api/bootstrap-static/";
-        
-        var topLevel = await httpClient.GetFromJsonAsync<Dictionary<string, JsonElement>>(url);
+        return (await _memoryCache.GetOrCreateAsync(
+            $"{this.GetType().Name}.GetPlayersData",
+            _ => GetPlayersDataOverWire() ))!;
 
-        if( topLevel != null)
+        async Task<List<Player>> GetPlayersDataOverWire()
         {
-            var tempPlayers = JsonSerializer.Deserialize<List<Player>>(topLevel["elements"]);
+            var players = new List<Player>();
+            string url = "https://fantasy.premierleague.com/api/bootstrap-static/";
+        
+            var topLevel = await _httpClient.GetFromJsonAsync<Dictionary<string, JsonElement>>(url);
 
-            if(tempPlayers != null)
+            if( topLevel != null)
             {
-                _logger.LogInformation("Count={Count}", tempPlayers.Count);
-                players = tempPlayers;
-            }
-        }
+                var tempPlayers = JsonSerializer.Deserialize<List<Player>>(topLevel["elements"]);
 
-        return players;
+                if(tempPlayers != null)
+                {
+                    _logger.LogInformation($"Found {tempPlayers.Count} players");
+                    players = tempPlayers;
+                }
+            }
+
+            return players;
+        }
     }
 }
