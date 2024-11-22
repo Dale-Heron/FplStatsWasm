@@ -9,7 +9,7 @@
 <PlayerTable @ref="_child" Players="TypedPlayers"></PlayerTable>
 
 @code {
-    public IEnumerable<Player>? TypedPlayers { get; set; }
+    public IEnumerable<Player>? TypedPlayers { get; set; } = new List<Player>();
 
     private PlayerTable? _child; 
 
