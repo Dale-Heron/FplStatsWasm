@@ -10,14 +10,15 @@ and makes it easy to search and filter.
 
 @code {
     
-    protected override async Task OnInitializedAsync(){
-
+    protected override async Task OnInitializedAsync()
+    {
         Logger.LogInformation("OnInitializedAsync");
         
         await base.OnInitializedAsync();
     } 
 
-    protected override async Task OnAfterRenderAsync(bool firstRender){
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
         Logger.LogInformation("OnAfterRenderAsync {FirstRender}", firstRender);
         
         await base.OnAfterRenderAsync(firstRender);

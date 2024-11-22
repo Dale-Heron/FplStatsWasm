@@ -27,11 +27,12 @@ public class GetLocalDataService
 
         async Task<List<Player>> GetPlayersDataFromServer()
         {
-            string url = "/Players";
+            const string url = "/Players";
         
-            List<Player>? players = await _httpClient.GetFromJsonAsync<List<Player>>(url);
+            var players = await _httpClient.GetFromJsonAsync<List<Player>>(url);
 
-            if(players!=null && players.Count>0){
+            if(players!=null && players.Count>0)
+            {
                 _logger.LogInformation($"Found {players.Count} players");
                 return players;
             }

@@ -9,12 +9,11 @@
 <PlayerTable @ref="_child" Players="TypedPlayers"></PlayerTable>
 
 @code {
-    public IEnumerable<Player>? TypedPlayers { get; set; } = new List<Player>();
-
+    private IEnumerable<Player>? TypedPlayers { get; set; } = new List<Player>();
     private PlayerTable? _child; 
 
-    protected override async Task OnInitializedAsync(){
-
+    protected override async Task OnInitializedAsync()
+    {
         var players = await FplService.GetPlayers();
 
         TypedPlayers = players.Where(p => p.Position == 3);
@@ -23,12 +22,10 @@
         await base.OnInitializedAsync();
     } 
     
-    protected override async Task OnAfterRenderAsync(bool firstRender){
-        
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
         if (firstRender && _child!=null)
         {
-            Logger.LogInformation($"about to call JS {firstRender}");
-
             await _child.SortTableInvokeJsAsync();
         }
         

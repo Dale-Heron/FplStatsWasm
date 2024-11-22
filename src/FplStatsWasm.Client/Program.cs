@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
-using Microsoft.Extensions.Caching.Memory;
 using FplStatsWasm.Client;
 using FplStatsWasm.Client.Services;
 

@@ -52,13 +52,12 @@
 
 @code {
     [Parameter]
-    public IEnumerable<Player>? Players { get; set; }
+    public required IEnumerable<Player> Players { get; set; }
 
     [Parameter]
-    public ElementReference TableRef { get; set; }
+    public bool ShowPlayerPosition { get; set; }
 
-    [Parameter]
-    public bool ShowPlayerPosition { get; set; } = false;
+    private ElementReference TableRef { get; set; }
 
     private string? Filter { get; set; }
 
@@ -74,8 +73,8 @@
         return false;
     }
 
-    public async Task SortTableInvokeJsAsync(){
-        
+    public async Task SortTableInvokeJsAsync()
+    {
         await Js.InvokeVoidAsync("sorttable.makeSortable", TableRef);
     } 
 }
